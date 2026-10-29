@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "roles")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,3 +21,4 @@ public class Rol {
     @ManyToMany(mappedBy = "roles")
     private java.util.Set<Usuario> usuarios;
 }
+

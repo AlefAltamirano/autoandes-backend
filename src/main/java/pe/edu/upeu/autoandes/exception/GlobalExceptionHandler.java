@@ -1,91 +1,74 @@
 package pe.edu.upeu.autoandes.exception;
 
+import pe.edu.upeu.autoandes.dto.ErrorResponseDTO;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.access.AccessDeniedException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(RecursoNoEncontradoException.class)
-    public ResponseEntity<ErrorResponseDTO> handleNotFound(RecursoNoEncontradoException ex, HttpServletRequest request) {
-        ErrorResponseDTO error = ErrorResponseDTO.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND.value())
-                .error("Not Found")
-                .mensaje(ex.getMessage())
-                .ruta(request.getRequestURI())
-                .build();
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(ReglaNegocioException.class)
-    public ResponseEntity<ErrorResponseDTO> handleBusinessRule(ReglaNegocioException ex, HttpServletRequest request) {
-        ErrorResponseDTO error = ErrorResponseDTO.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.CONFLICT.value())
-                .error("Conflict")
-                .mensaje(ex.getMessage())
-                .ruta(request.getRequestURI())
-                .build();
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        ErrorResponseDTO error = ErrorResponseDTO.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Validation Failed")
-                .mensaje("Error en los datos enviados")
-                .ruta(request.getRequestURI())
-                .campos(errors)
-                .build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorResponseDTO> handleAuthentication(AuthenticationException ex, HttpServletRequest request) {
-        return response(HttpStatus.UNAUTHORIZED, "Unauthorized", "Credenciales inválidas o cuenta inactiva", request, null);
-    }
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponseDTO> handleMalformed(HttpMessageNotReadableException ex, HttpServletRequest request) {
-        return response(HttpStatus.BAD_REQUEST, "Bad Request", "El cuerpo de la solicitud no es válido", request, null);
-    }
-
-    private ResponseEntity<ErrorResponseDTO> response(HttpStatus status, String error, String message,
-                                                       HttpServletRequest request, Map<String, String> fields) {
+    private ResponseEntity<ErrorResponseDTO> response(HttpStatus status, String mensaje,
+            HttpServletRequest request, Map<String,String> campos) {
         return ResponseEntity.status(status).body(ErrorResponseDTO.builder().timestamp(LocalDateTime.now())
-                .status(status.value()).error(error).mensaje(message).ruta(request.getRequestURI()).campos(fields).build());
+            .status(status.value()).error(status.getReasonPhrase()).mensaje(mensaje)
+            .ruta(request.getRequestURI()).campos(campos).build());
     }
-
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<ErrorResponseDTO> missing(RecursoNoEncontradoException e, HttpServletRequest r) {
+        return response(HttpStatus.NOT_FOUND,e.getMessage(),r,null);
+    }
+    @ExceptionHandler(ReglaNegocioException.class)
+    public ResponseEntity<ErrorResponseDTO> conflict(ReglaNegocioException e, HttpServletRequest r) {
+        log.warn("Regla rechazada en {}: {}", r.getRequestURI(), e.getMessage());
+        return response(HttpStatus.CONFLICT,e.getMessage(),r,null);
+    }
+    @ExceptionHandler(SolicitudInvalidaException.class)
+    public ResponseEntity<ErrorResponseDTO> invalid(SolicitudInvalidaException e, HttpServletRequest r) {
+        log.warn("Solicitud rechazada: {}", e.getMessage());
+        return response(HttpStatus.BAD_REQUEST,e.getMessage(),r,null);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponseDTO> validation(MethodArgumentNotValidException e, HttpServletRequest r) {
+        Map<String,String> fields = new LinkedHashMap<>();
+        e.getBindingResult().getFieldErrors().forEach(f -> fields.put(f.getField(),f.getDefaultMessage()));
+        return response(HttpStatus.BAD_REQUEST,"Datos inválidos",r,fields);
+    }
+    @ExceptionHandler({HttpMessageNotReadableException.class,MethodArgumentTypeMismatchException.class,
+        org.springframework.web.bind.MissingServletRequestParameterException.class})
+    public ResponseEntity<ErrorResponseDTO> malformed(Exception e, HttpServletRequest r) {
+        return response(HttpStatus.BAD_REQUEST,"Cuerpo o parámetros inválidos",r,null);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDTO> authentication(AuthenticationException e, HttpServletRequest r) {
+        return response(HttpStatus.UNAUTHORIZED,"Credenciales inválidas o cuenta inactiva",r,null);
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> forbidden(AccessDeniedException e, HttpServletRequest r) {
+        return response(HttpStatus.FORBIDDEN,"No tiene permisos para realizar esta operación",r,null);
+    }
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> noRoute(NoResourceFoundException e, HttpServletRequest r) {
+        return response(HttpStatus.NOT_FOUND,"Ruta no encontrada",r,null);
+    }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDTO> integrity(DataIntegrityViolationException e, HttpServletRequest r) {
+        log.warn("Conflicto de integridad en {}",r.getRequestURI());
+        return response(HttpStatus.CONFLICT,"El registro está duplicado o tiene referencias asociadas",r,null);
+    }
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleGlobalException(Exception ex, HttpServletRequest request) {
-        ErrorResponseDTO error = ErrorResponseDTO.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error("Internal Server Error")
-                .mensaje(ex.getMessage())
-                .ruta(request.getRequestURI())
-                .build();
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponseDTO> unexpected(Exception e, HttpServletRequest r) {
+        log.error("Error inesperado en {}",r.getRequestURI(),e);
+        return response(HttpStatus.INTERNAL_SERVER_ERROR,"Error interno del servidor",r,null);
     }
 }

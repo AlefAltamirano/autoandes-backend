@@ -7,7 +7,8 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "usuarios")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class Usuario {
     private String nombreCompleto;
 
     @Column(nullable = false)
-    @JdbcTypeCode(SqlTypes.NUMERIC)
+    @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
     @Builder.Default
     private Boolean activo = true;
 
@@ -36,3 +37,5 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "rolid"))
     private java.util.Set<Rol> roles;
 }
+
+
