@@ -2,11 +2,13 @@ package pe.edu.upeu.autoandes.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "ordenes_servicio")
+@Table(name = "orden_servicio")
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,21 +18,32 @@ public class OrdenServicio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(nullable = false, unique = true)
-    private String codigo;
+    @Column(name = "numero", nullable = false, unique = true)
+    private String numero;
+    
+    @Column(name = "fecha", nullable = false)
+    private LocalDateTime fecha;
     
     @Column(nullable = false)
-    private LocalDateTime fechaRegistro;
-    
-    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NUMERIC)
     private Double kilometraje;
     
     @Column(nullable = false)
     private String estado; // REGISTRADA, ANULADA
+
+    @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NUMERIC)
+    private Double total;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehiculo_id", nullable = false)
     private Vehiculo vehiculo;
+
+    @Column(name = "usuario_registro", nullable = false)
+    private String usuarioRegistro;
+
+    @Column(name = "motivo_anulacion")
+    private String motivoAnulacion;
     
     @OneToMany(mappedBy = "ordenServicio", cascade = CascadeType.ALL)
     private List<DetalleOrden> detalles;

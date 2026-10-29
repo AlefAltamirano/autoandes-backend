@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "vehiculos")
+@Table(name = "vehiculo")
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,7 +17,14 @@ public class Vehiculo {
     @Column(nullable = false, unique = true)
     private String placa;
     
+    @Column(nullable = false)
     private String marca;
+
+    @Column(nullable = false)
+    private String modelo;
+
+    @Column(nullable = false)
+    private Integer anio;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)

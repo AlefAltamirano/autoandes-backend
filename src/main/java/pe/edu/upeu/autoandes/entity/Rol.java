@@ -16,4 +16,7 @@ public class Rol {
     
     @Column(nullable = false, unique = true)
     private String nombre;
+
+    @ManyToMany(mappedBy = "roles")
+    private java.util.Set<Usuario> usuarios;
 }

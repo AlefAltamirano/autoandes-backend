@@ -7,6 +7,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -57,6 +59,22 @@ public class GlobalExceptionHandler {
                 .campos(errors)
                 .build();
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAuthentication(AuthenticationException ex, HttpServletRequest request) {
+        return response(HttpStatus.UNAUTHORIZED, "Unauthorized", "Credenciales inválidas o cuenta inactiva", request, null);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDTO> handleMalformed(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        return response(HttpStatus.BAD_REQUEST, "Bad Request", "El cuerpo de la solicitud no es válido", request, null);
+    }
+
+    private ResponseEntity<ErrorResponseDTO> response(HttpStatus status, String error, String message,
+                                                       HttpServletRequest request, Map<String, String> fields) {
+        return ResponseEntity.status(status).body(ErrorResponseDTO.builder().timestamp(LocalDateTime.now())
+                .status(status.value()).error(error).mensaje(message).ruta(request.getRequestURI()).campos(fields).build());
     }
 
     @ExceptionHandler(Exception.class)

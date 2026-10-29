@@ -2,9 +2,11 @@ package pe.edu.upeu.autoandes.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
-@Table(name = "detalles_orden")
+@Table(name = "detalle_orden")
 @Data
 @Builder
 @NoArgsConstructor
@@ -26,8 +28,10 @@ public class DetalleOrden {
     private Integer cantidad;
     
     @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NUMERIC)
     private Double precioUnitario;
     
     @Column(nullable = false)
+    @JdbcTypeCode(SqlTypes.NUMERIC)
     private Double subtotal;
 }
