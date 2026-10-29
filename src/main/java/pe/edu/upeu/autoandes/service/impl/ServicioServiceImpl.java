@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pe.edu.upeu.autoandes.entity.Servicio;
 import pe.edu.upeu.autoandes.exception.ReglaNegocioException;
 import pe.edu.upeu.autoandes.repository.ServicioRepository;
+import pe.edu.upeu.autoandes.repository.OrdenServicioRepository;
 import pe.edu.upeu.autoandes.service.ServicioService;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ServicioServiceImpl implements ServicioService {
 
     private final ServicioRepository repository;
+    private final OrdenServicioRepository ordenServicioRepository;
 
     @Override
     public List<Servicio> listar() {
@@ -34,13 +36,18 @@ public class ServicioServiceImpl implements ServicioService {
 
     @Override
     public void eliminar(Long id) {
+        if (!repository.existsById(id)) throw new pe.edu.upeu.autoandes.exception.RecursoNoEncontradoException("Servicio no encontrado");
+        if (ordenServicioRepository.existsByDetallesServicioId(id)) {
+            throw new ReglaNegocioException("No se puede eliminar un servicio con órdenes asociadas");
+        }
         repository.deleteById(id);
         log.info("Servicio eliminado: {}", id);
     }
 
     @Override
     public void cambiarEstado(Long id, Boolean activo) {
-        Servicio s = repository.findById(id).orElseThrow();
+        Servicio s = repository.findById(id)
+                .orElseThrow(() -> new pe.edu.upeu.autoandes.exception.RecursoNoEncontradoException("Servicio no encontrado"));
         s.setActivo(activo);
         repository.save(s);
         log.info("Servicio {} cambió estado a {}", id, activo);

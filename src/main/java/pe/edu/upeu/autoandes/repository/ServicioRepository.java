@@ -5,4 +5,6 @@ import pe.edu.upeu.autoandes.entity.Servicio;
 
 public interface ServicioRepository extends JpaRepository<Servicio, Long> {
     boolean existsByCodigo(String codigo);
+
+    boolean existsByCodigoAndIdNot(String codigo, Long id);
 }
