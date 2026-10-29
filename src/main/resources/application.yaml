@@ -13,7 +13,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/FREE
+    url: jdbc:oracle:thin:@localhost:1522/FREEPDB1
     username: AUTOANDES_DB
     password: 123456
     driver-class-name: oracle.jdbc.OracleDriver
@@ -37,4 +37,3 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
-
