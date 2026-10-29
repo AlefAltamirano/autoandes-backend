@@ -1,0 +1,1227 @@
+[
+  {
+    "prueba": "Login administrador",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 200
+    }
+  },
+  {
+    "prueba": "Login asesor",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 200
+    }
+  },
+  {
+    "prueba": "Login jefe",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 200
+    }
+  },
+  {
+    "prueba": "Login rechazado inactivo",
+    "status": 401,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 401
+    }
+  },
+  {
+    "prueba": "Login rechazado nadie",
+    "status": 401,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 401
+    }
+  },
+  {
+    "prueba": "Login rechazado admin",
+    "status": 401,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 401
+    }
+  },
+  {
+    "prueba": "Login incompleto",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 400
+    }
+  },
+  {
+    "prueba": "Usuario actual",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "autenticacion": 200
+    }
+  },
+  {
+    "prueba": "Sin token",
+    "status": 401,
+    "resultado": "OK",
+    "respuesta": {
+      "timestamp": "2026-10-29T12:45:03.6486473",
+      "status": 401,
+      "error": "Unauthorized",
+      "mensaje": "Autenticación requerida o inválida",
+      "ruta": "/api/v1/servicios"
+    }
+  },
+  {
+    "prueba": "Token alterado",
+    "status": 401,
+    "resultado": "OK",
+    "respuesta": {
+      "timestamp": "2026-10-29T12:45:03.6751554",
+      "status": 401,
+      "error": "Unauthorized",
+      "mensaje": "Autenticación requerida o inválida",
+      "ruta": "/api/v1/servicios"
+    }
+  },
+  {
+    "prueba": "Token vencido",
+    "status": 401,
+    "resultado": "OK",
+    "respuesta": {
+      "timestamp": "2026-10-29T12:45:03.6919855",
+      "status": 401,
+      "error": "Unauthorized",
+      "mensaje": "Autenticación requerida o inválida",
+      "ruta": "/api/v1/servicios"
+    }
+  },
+  {
+    "prueba": "CORS preflight Authorization",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "origen": "http://localhost:4200"
+    }
+  },
+  {
+    "prueba": "Reporte prohibido asesor",
+    "status": 403,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Forbidden",
+      "mensaje": "No tiene permisos para realizar esta operación",
+      "ruta": "/api/v1/reportes/ingresos-por-servicio",
+      "status": 403,
+      "timestamp": "2026-10-29T12:45:03.738934"
+    }
+  },
+  {
+    "prueba": "Anulacion prohibida asesor",
+    "status": 403,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Forbidden",
+      "mensaje": "No tiene permisos para realizar esta operación",
+      "ruta": "/api/v1/ordenes/1/anular",
+      "status": 403,
+      "timestamp": "2026-10-29T12:45:03.7541033"
+    }
+  },
+  {
+    "prueba": "Registro prohibido jefe",
+    "status": 403,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Forbidden",
+      "mensaje": "No tiene permisos para realizar esta operación",
+      "ruta": "/api/v1/ordenes",
+      "status": 403,
+      "timestamp": "2026-10-29T12:45:03.7977045"
+    }
+  },
+  {
+    "prueba": "Clientes",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 1,
+        "documento": "12345678",
+        "nombres": "Juan Perez",
+        "telefono": "987654321"
+      },
+      {
+        "id": 2,
+        "documento": "87654321",
+        "nombres": "Maria Lopez",
+        "telefono": "912345678"
+      },
+      {
+        "id": 7,
+        "documento": "11111111",
+        "nombres": "Carlos Quispe",
+        "telefono": "987654321"
+      },
+      {
+        "id": 8,
+        "documento": "22222222",
+        "nombres": "Rosa Flores",
+        "telefono": "987654321"
+      },
+      {
+        "id": 9,
+        "documento": "33333333",
+        "nombres": "Luis Mamani",
+        "telefono": "987654321"
+      },
+      {
+        "id": 10,
+        "documento": "44444444",
+        "nombres": "Ana Torres",
+        "telefono": "987654321"
+      }
+    ]
+  },
+  {
+    "prueba": "Servicios",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 1,
+        "codigo": "SRV-001",
+        "nombre": "Cambio de Aceite",
+        "precio": 150.0,
+        "duracionMin": 45,
+        "activo": true
+      },
+      {
+        "id": 2,
+        "codigo": "SRV-002",
+        "nombre": "Alineamiento y Balanceo",
+        "precio": 120.0,
+        "duracionMin": 60,
+        "activo": true
+      },
+      {
+        "id": 3,
+        "codigo": "SRV-008",
+        "nombre": "Lavado Integral",
+        "precio": 80.0,
+        "duracionMin": 30,
+        "activo": false
+      },
+      {
+        "id": 9,
+        "codigo": "SRV-003",
+        "nombre": "Afinamiento",
+        "precio": 250.0,
+        "duracionMin": 120,
+        "activo": true
+      },
+      {
+        "id": 10,
+        "codigo": "SRV-004",
+        "nombre": "Revision de frenos",
+        "precio": 100.0,
+        "duracionMin": 60,
+        "activo": true
+      },
+      {
+        "id": 11,
+        "codigo": "SRV-005",
+        "nombre": "Cambio de pastillas",
+        "precio": 180.0,
+        "duracionMin": 90,
+        "activo": true
+      },
+      {
+        "id": 12,
+        "codigo": "SRV-006",
+        "nombre": "Balanceo",
+        "precio": 70.0,
+        "duracionMin": 30,
+        "activo": true
+      },
+      {
+        "id": 13,
+        "codigo": "SRV-007",
+        "nombre": "Diagnostico electronico",
+        "precio": 90.0,
+        "duracionMin": 45,
+        "activo": true
+      },
+      {
+        "id": 16,
+        "codigo": "SRV-090",
+        "nombre": "Inspección de entrega",
+        "precio": 55.5,
+        "duracionMin": 30,
+        "activo": true
+      }
+    ]
+  },
+  {
+    "prueba": "Vehiculos",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 1,
+        "placa": "AAA-111",
+        "marca": "Toyota",
+        "modelo": "Corolla",
+        "anio": 2020,
+        "clienteId": 1,
+        "clienteNombre": "Juan Perez"
+      },
+      {
+        "id": 2,
+        "placa": "BBB-222",
+        "marca": "Hyundai",
+        "modelo": "Elantra",
+        "anio": 2021,
+        "clienteId": 2,
+        "clienteNombre": "Maria Lopez"
+      },
+      {
+        "id": 9,
+        "placa": "CCC-333",
+        "marca": "Kia",
+        "modelo": "Rio",
+        "anio": 2022,
+        "clienteId": 1,
+        "clienteNombre": "Juan Perez"
+      },
+      {
+        "id": 10,
+        "placa": "DDD-444",
+        "marca": "Nissan",
+        "modelo": "Versa",
+        "anio": 2022,
+        "clienteId": 7,
+        "clienteNombre": "Carlos Quispe"
+      },
+      {
+        "id": 11,
+        "placa": "EEE-555",
+        "marca": "Toyota",
+        "modelo": "Yaris",
+        "anio": 2022,
+        "clienteId": 8,
+        "clienteNombre": "Rosa Flores"
+      },
+      {
+        "id": 12,
+        "placa": "FFF-666",
+        "marca": "Suzuki",
+        "modelo": "Swift",
+        "anio": 2022,
+        "clienteId": 9,
+        "clienteNombre": "Luis Mamani"
+      },
+      {
+        "id": 13,
+        "placa": "GGG-777",
+        "marca": "Kia",
+        "modelo": "Picanto",
+        "anio": 2022,
+        "clienteId": 10,
+        "clienteNombre": "Ana Torres"
+      },
+      {
+        "id": 14,
+        "placa": "HHH-888",
+        "marca": "Hyundai",
+        "modelo": "Accent",
+        "anio": 2022,
+        "clienteId": 2,
+        "clienteNombre": "Maria Lopez"
+      },
+      {
+        "id": 17,
+        "placa": "ZZX-900",
+        "marca": "Toyota",
+        "modelo": "Corolla",
+        "anio": 2026,
+        "clienteId": 1,
+        "clienteNombre": "Juan Perez"
+      }
+    ]
+  },
+  {
+    "prueba": "Servicio inexistente",
+    "status": 404,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Not Found",
+      "mensaje": "Servicio no encontrado",
+      "ruta": "/api/v1/servicios/999999",
+      "status": 404,
+      "timestamp": "2026-10-29T12:45:03.9477027"
+    }
+  },
+  {
+    "prueba": "Servicio invalido",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "campos": {
+        "nombre": "el tamaño debe estar entre 3 y 80",
+        "codigo": "El código debe tener el formato SRV-000",
+        "duracionMin": "debe ser mayor que o igual a 15",
+        "precio": "debe ser mayor que 0"
+      },
+      "error": "Bad Request",
+      "mensaje": "Datos inválidos",
+      "ruta": "/api/v1/servicios",
+      "status": 400,
+      "timestamp": "2026-10-29T12:45:03.9822231"
+    }
+  },
+  {
+    "prueba": "Alta servicio",
+    "status": 201,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 17,
+      "codigo": "SRV-099",
+      "nombre": "Servicio temporal de prueba",
+      "precio": 12.35,
+      "duracionMin": 30,
+      "activo": true
+    }
+  },
+  {
+    "prueba": "Codigo duplicado",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "El código ya existe",
+      "ruta": "/api/v1/servicios",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:04.0699554"
+    }
+  },
+  {
+    "prueba": "Editar servicio",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 17,
+      "codigo": "SRV-099",
+      "nombre": "Servicio temporal de prueba",
+      "precio": 20.15,
+      "duracionMin": 30,
+      "activo": true
+    }
+  },
+  {
+    "prueba": "Baja servicio",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 17,
+      "codigo": "SRV-099",
+      "nombre": "Servicio temporal de prueba",
+      "precio": 20.15,
+      "duracionMin": 30,
+      "activo": false
+    }
+  },
+  {
+    "prueba": "Eliminar servicio sin uso",
+    "status": 204,
+    "resultado": "OK",
+    "respuesta": null
+  },
+  {
+    "prueba": "Eliminar servicio usado",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "No se puede eliminar un servicio con órdenes asociadas",
+      "ruta": "/api/v1/servicios/1",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:04.2422265"
+    }
+  },
+  {
+    "prueba": "Alta vehiculo",
+    "status": 201,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 18,
+      "placa": "ZZT-999",
+      "marca": "Prueba",
+      "modelo": "Temporal",
+      "anio": 2026,
+      "clienteId": 1,
+      "clienteNombre": "Juan Perez"
+    }
+  },
+  {
+    "prueba": "Placa duplicada",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "La placa ya existe",
+      "ruta": "/api/v1/vehiculos",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:04.3177044"
+    }
+  },
+  {
+    "prueba": "Editar vehiculo",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 18,
+      "placa": "ZZT-999",
+      "marca": "Prueba",
+      "modelo": "Editado",
+      "anio": 2026,
+      "clienteId": 1,
+      "clienteNombre": "Juan Perez"
+    }
+  },
+  {
+    "prueba": "Cliente inexistente",
+    "status": 404,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Not Found",
+      "mensaje": "Cliente no encontrado",
+      "ruta": "/api/v1/vehiculos",
+      "status": 404,
+      "timestamp": "2026-10-29T12:45:04.3508456"
+    }
+  },
+  {
+    "prueba": "Eliminar vehiculo sin orden",
+    "status": 204,
+    "resultado": "OK",
+    "respuesta": null
+  },
+  {
+    "prueba": "Eliminar vehiculo con orden",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "No se puede eliminar un vehículo con órdenes asociadas",
+      "ruta": "/api/v1/vehiculos/1",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:04.4060273"
+    }
+  },
+  {
+    "prueba": "Filtro cliente",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 1,
+        "placa": "AAA-111",
+        "marca": "Toyota",
+        "modelo": "Corolla",
+        "anio": 2020,
+        "clienteId": 1,
+        "clienteNombre": "Juan Perez"
+      },
+      {
+        "id": 9,
+        "placa": "CCC-333",
+        "marca": "Kia",
+        "modelo": "Rio",
+        "anio": 2022,
+        "clienteId": 1,
+        "clienteNombre": "Juan Perez"
+      },
+      {
+        "id": 17,
+        "placa": "ZZX-900",
+        "marca": "Toyota",
+        "modelo": "Corolla",
+        "anio": 2026,
+        "clienteId": 1,
+        "clienteNombre": "Juan Perez"
+      }
+    ]
+  },
+  {
+    "prueba": "Conteo antes de rollback",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 10,
+        "numero": "OS-000009",
+        "fecha": "2026-10-29T12:37:15.19208",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 270.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 1,
+            "precioUnitario": 150.0,
+            "subtotal": 150.0
+          },
+          {
+            "servicioId": 2,
+            "codigo": "SRV-002",
+            "servicio": "Alineamiento y Balanceo",
+            "cantidad": 1,
+            "precioUnitario": 120.0,
+            "subtotal": 120.0
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "numero": "OS-000008",
+        "fecha": "2026-10-29T12:29:56.14583",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "ANULADA",
+        "total": 300.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": "Cancelacion de prueba automatizada",
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 2,
+            "precioUnitario": 150.0,
+            "subtotal": 300.0
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "numero": "OS-000006",
+        "fecha": "2026-10-29T12:29:19.889603",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 300.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 2,
+            "precioUnitario": 150.0,
+            "subtotal": 300.0
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "numero": "OS-000004",
+        "fecha": "2026-10-29T12:26:02.33296",
+        "placa": "DDD-444",
+        "kilometraje": 10000.0,
+        "estado": "ANULADA",
+        "total": 100.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": "Cancelacion del cliente",
+        "detalles": [
+          {
+            "servicioId": 10,
+            "codigo": "SRV-004",
+            "servicio": "Revision de frenos",
+            "cantidad": 1,
+            "precioUnitario": 100.0,
+            "subtotal": 100.0
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "numero": "OS-000003",
+        "fecha": "2026-10-29T12:26:02.328556",
+        "placa": "CCC-333",
+        "kilometraje": 20000.0,
+        "estado": "REGISTRADA",
+        "total": 250.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 9,
+            "codigo": "SRV-003",
+            "servicio": "Afinamiento",
+            "cantidad": 1,
+            "precioUnitario": 250.0,
+            "subtotal": 250.0
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "numero": "OS-000002",
+        "fecha": "2026-10-29T12:26:02.324099",
+        "placa": "BBB-222",
+        "kilometraje": 30000.0,
+        "estado": "REGISTRADA",
+        "total": 120.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 2,
+            "codigo": "SRV-002",
+            "servicio": "Alineamiento y Balanceo",
+            "cantidad": 1,
+            "precioUnitario": 120.0,
+            "subtotal": 120.0
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "numero": "OS-000001",
+        "fecha": "2026-10-29T10:10:44.58645",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 150.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 1,
+            "precioUnitario": 150.0,
+            "subtotal": 150.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "prueba": "Tercer detalle inactivo",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "El servicio SRV-008 no está activo",
+      "ruta": "/api/v1/ordenes",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:04.5959356"
+    }
+  },
+  {
+    "prueba": "Conteo despues de rollback",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 10,
+        "numero": "OS-000009",
+        "fecha": "2026-10-29T12:37:15.19208",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 270.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 1,
+            "precioUnitario": 150.0,
+            "subtotal": 150.0
+          },
+          {
+            "servicioId": 2,
+            "codigo": "SRV-002",
+            "servicio": "Alineamiento y Balanceo",
+            "cantidad": 1,
+            "precioUnitario": 120.0,
+            "subtotal": 120.0
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "numero": "OS-000008",
+        "fecha": "2026-10-29T12:29:56.14583",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "ANULADA",
+        "total": 300.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": "Cancelacion de prueba automatizada",
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 2,
+            "precioUnitario": 150.0,
+            "subtotal": 300.0
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "numero": "OS-000006",
+        "fecha": "2026-10-29T12:29:19.889603",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 300.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 2,
+            "precioUnitario": 150.0,
+            "subtotal": 300.0
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "numero": "OS-000004",
+        "fecha": "2026-10-29T12:26:02.33296",
+        "placa": "DDD-444",
+        "kilometraje": 10000.0,
+        "estado": "ANULADA",
+        "total": 100.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": "Cancelacion del cliente",
+        "detalles": [
+          {
+            "servicioId": 10,
+            "codigo": "SRV-004",
+            "servicio": "Revision de frenos",
+            "cantidad": 1,
+            "precioUnitario": 100.0,
+            "subtotal": 100.0
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "numero": "OS-000003",
+        "fecha": "2026-10-29T12:26:02.328556",
+        "placa": "CCC-333",
+        "kilometraje": 20000.0,
+        "estado": "REGISTRADA",
+        "total": 250.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 9,
+            "codigo": "SRV-003",
+            "servicio": "Afinamiento",
+            "cantidad": 1,
+            "precioUnitario": 250.0,
+            "subtotal": 250.0
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "numero": "OS-000002",
+        "fecha": "2026-10-29T12:26:02.324099",
+        "placa": "BBB-222",
+        "kilometraje": 30000.0,
+        "estado": "REGISTRADA",
+        "total": 120.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 2,
+            "codigo": "SRV-002",
+            "servicio": "Alineamiento y Balanceo",
+            "cantidad": 1,
+            "precioUnitario": 120.0,
+            "subtotal": 120.0
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "numero": "OS-000001",
+        "fecha": "2026-10-29T10:10:44.58645",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 150.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 1,
+            "precioUnitario": 150.0,
+            "subtotal": 150.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "prueba": "Kilometraje menor",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "El kilometraje no puede ser menor al de la última orden: 45000.0",
+      "ruta": "/api/v1/ordenes",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:04.6668175"
+    }
+  },
+  {
+    "prueba": "Servicio repetido",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Bad Request",
+      "mensaje": "No se puede repetir un servicio en la orden",
+      "ruta": "/api/v1/ordenes",
+      "status": 400,
+      "timestamp": "2026-10-29T12:45:04.7079003"
+    }
+  },
+  {
+    "prueba": "Cantidad invalida",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "campos": {
+        "detalles[0].cantidad": "debe ser menor que o igual a 5"
+      },
+      "error": "Bad Request",
+      "mensaje": "Datos inválidos",
+      "ruta": "/api/v1/ordenes",
+      "status": 400,
+      "timestamp": "2026-10-29T12:45:04.733847"
+    }
+  },
+  {
+    "prueba": "Orden vacia",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "campos": {
+        "detalles": "no debe estar vacío"
+      },
+      "error": "Bad Request",
+      "mensaje": "Datos inválidos",
+      "ruta": "/api/v1/ordenes",
+      "status": 400,
+      "timestamp": "2026-10-29T12:45:04.7624497"
+    }
+  },
+  {
+    "prueba": "Reporte previo",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "codigo": "SRV-001",
+        "servicio": "Cambio de Aceite",
+        "cantidadTotal": 4,
+        "importeTotal": 600.0
+      },
+      {
+        "codigo": "SRV-003",
+        "servicio": "Afinamiento",
+        "cantidadTotal": 1,
+        "importeTotal": 250.0
+      },
+      {
+        "codigo": "SRV-002",
+        "servicio": "Alineamiento y Balanceo",
+        "cantidadTotal": 2,
+        "importeTotal": 240.0
+      }
+    ]
+  },
+  {
+    "prueba": "Registro atomico",
+    "status": 201,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 11,
+      "numero": "OS-000011",
+      "fecha": "2026-10-29T12:45:04.8156763",
+      "placa": "AAA-111",
+      "kilometraje": 45000.0,
+      "estado": "REGISTRADA",
+      "total": 300.0,
+      "usuarioRegistro": "asesor",
+      "motivoAnulacion": null,
+      "detalles": [
+        {
+          "servicioId": 1,
+          "codigo": "SRV-001",
+          "servicio": "Cambio de Aceite",
+          "cantidad": 2,
+          "precioUnitario": 150.0,
+          "subtotal": 300.0
+        }
+      ]
+    }
+  },
+  {
+    "prueba": "Detalle orden",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 11,
+      "numero": "OS-000011",
+      "fecha": "2026-10-29T12:45:04.815676",
+      "placa": "AAA-111",
+      "kilometraje": 45000.0,
+      "estado": "REGISTRADA",
+      "total": 300.0,
+      "usuarioRegistro": "asesor",
+      "motivoAnulacion": null,
+      "detalles": [
+        {
+          "servicioId": 1,
+          "codigo": "SRV-001",
+          "servicio": "Cambio de Aceite",
+          "cantidad": 2,
+          "precioUnitario": 150.0,
+          "subtotal": 300.0
+        }
+      ]
+    }
+  },
+  {
+    "prueba": "Filtros combinados",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "id": 11,
+        "numero": "OS-000011",
+        "fecha": "2026-10-29T12:45:04.815676",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 300.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 2,
+            "precioUnitario": 150.0,
+            "subtotal": 300.0
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "numero": "OS-000009",
+        "fecha": "2026-10-29T12:37:15.19208",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 270.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 1,
+            "precioUnitario": 150.0,
+            "subtotal": 150.0
+          },
+          {
+            "servicioId": 2,
+            "codigo": "SRV-002",
+            "servicio": "Alineamiento y Balanceo",
+            "cantidad": 1,
+            "precioUnitario": 120.0,
+            "subtotal": 120.0
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "numero": "OS-000006",
+        "fecha": "2026-10-29T12:29:19.889603",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 300.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 2,
+            "precioUnitario": 150.0,
+            "subtotal": 300.0
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "numero": "OS-000001",
+        "fecha": "2026-10-29T10:10:44.58645",
+        "placa": "AAA-111",
+        "kilometraje": 45000.0,
+        "estado": "REGISTRADA",
+        "total": 150.0,
+        "usuarioRegistro": "asesor",
+        "motivoAnulacion": null,
+        "detalles": [
+          {
+            "servicioId": 1,
+            "codigo": "SRV-001",
+            "servicio": "Cambio de Aceite",
+            "cantidad": 1,
+            "precioUnitario": 150.0,
+            "subtotal": 150.0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "prueba": "Motivo corto",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "campos": {
+        "motivo": "el tamaño debe estar entre 10 y 200"
+      },
+      "error": "Bad Request",
+      "mensaje": "Datos inválidos",
+      "ruta": "/api/v1/ordenes/11/anular",
+      "status": 400,
+      "timestamp": "2026-10-29T12:45:04.964476"
+    }
+  },
+  {
+    "prueba": "Anular mismo dia",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": {
+      "id": 11,
+      "numero": "OS-000011",
+      "fecha": "2026-10-29T12:45:04.815676",
+      "placa": "AAA-111",
+      "kilometraje": 45000.0,
+      "estado": "ANULADA",
+      "total": 300.0,
+      "usuarioRegistro": "asesor",
+      "motivoAnulacion": "Cancelacion de prueba automatizada",
+      "detalles": [
+        {
+          "servicioId": 1,
+          "codigo": "SRV-001",
+          "servicio": "Cambio de Aceite",
+          "cantidad": 2,
+          "precioUnitario": 150.0,
+          "subtotal": 300.0
+        }
+      ]
+    }
+  },
+  {
+    "prueba": "Reanular orden",
+    "status": 409,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Conflict",
+      "mensaje": "Solo se pueden anular órdenes registradas",
+      "ruta": "/api/v1/ordenes/11/anular",
+      "status": 409,
+      "timestamp": "2026-10-29T12:45:05.0444071"
+    }
+  },
+  {
+    "prueba": "Reporte excluye anuladas",
+    "status": 200,
+    "resultado": "OK",
+    "respuesta": [
+      {
+        "codigo": "SRV-001",
+        "servicio": "Cambio de Aceite",
+        "cantidadTotal": 4,
+        "importeTotal": 600.0
+      },
+      {
+        "codigo": "SRV-003",
+        "servicio": "Afinamiento",
+        "cantidadTotal": 1,
+        "importeTotal": 250.0
+      },
+      {
+        "codigo": "SRV-002",
+        "servicio": "Alineamiento y Balanceo",
+        "cantidadTotal": 2,
+        "importeTotal": 240.0
+      }
+    ]
+  },
+  {
+    "prueba": "Fecha invalida",
+    "status": 400,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Bad Request",
+      "mensaje": "Cuerpo o parámetros inválidos",
+      "ruta": "/api/v1/ordenes",
+      "status": 400,
+      "timestamp": "2026-10-29T12:45:05.1060951"
+    }
+  },
+  {
+    "prueba": "Ruta inexistente",
+    "status": 404,
+    "resultado": "OK",
+    "respuesta": {
+      "error": "Not Found",
+      "mensaje": "Ruta no encontrada",
+      "ruta": "/api/v1/inexistente",
+      "status": 404,
+      "timestamp": "2026-10-29T12:45:05.1358828"
+    }
+  }
+]

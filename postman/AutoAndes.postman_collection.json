@@ -1,0 +1,1665 @@
+{
+  "info": {
+    "name": "AutoAndes · Examen U2 · Versión A",
+    "description": "Ejecutar en orden con backend y Oracle disponibles. Incluye ejemplos reales de respuestas y verificación de rollback. La orden de demostración se anula al final.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    },
+    {
+      "key": "tokenAlterado",
+      "value": "token-invalido"
+    }
+  ],
+  "item": [
+    {
+      "name": "Login admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Auto2026*\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"adminToken\",pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login asesor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"asesor\",\n  \"password\": \"Auto2026*\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"asesorToken\",pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login jefe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"jefe\",\n  \"password\": \"Auto2026*\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"jefeToken\",pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Usuario actual",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/auth/me",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/clientes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"clienteId\",pm.response.json()[0].id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/clientes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"id\": 1,\n    \"documento\": \"12345678\",\n    \"nombres\": \"Juan Perez\",\n    \"telefono\": \"987654321\"\n  },\n  {\n    \"id\": 2,\n    \"documento\": \"87654321\",\n    \"nombres\": \"Maria Lopez\",\n    \"telefono\": \"912345678\"\n  },\n  {\n    \"id\": 7,\n    \"documento\": \"11111111\",\n    \"nombres\": \"Carlos Quispe\",\n    \"telefono\": \"987654321\"\n  },\n  {\n    \"id\": 8,\n    \"documento\": \"22222222\",\n    \"nombres\": \"Rosa Flores\",\n    \"telefono\": \"987654321\"\n  },\n  {\n    \"id\": 9,\n    \"documento\": \"33333333\",\n    \"nombres\": \"Luis Mamani\",\n    \"telefono\": \"987654321\"\n  },\n  {\n    \"id\": 10,\n    \"documento\": \"44444444\",\n    \"nombres\": \"Ana Torres\",\n    \"telefono\": \"987654321\"\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "Servicios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/servicios",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const s=pm.response.json();for(const [codigo,key] of [[\"SRV-001\",\"servicio1\"],[\"SRV-002\",\"servicio2\"],[\"SRV-008\",\"inactivo\"]])pm.collectionVariables.set(key,s.find(x=>x.codigo===codigo).id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/servicios",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"id\": 1,\n    \"codigo\": \"SRV-001\",\n    \"nombre\": \"Cambio de Aceite\",\n    \"precio\": 150.0,\n    \"duracionMin\": 45,\n    \"activo\": true\n  },\n  {\n    \"id\": 2,\n    \"codigo\": \"SRV-002\",\n    \"nombre\": \"Alineamiento y Balanceo\",\n    \"precio\": 120.0,\n    \"duracionMin\": 60,\n    \"activo\": true\n  },\n  {\n    \"id\": 3,\n    \"codigo\": \"SRV-008\",\n    \"nombre\": \"Lavado Integral\",\n    \"precio\": 80.0,\n    \"duracionMin\": 30,\n    \"activo\": false\n  },\n  {\n    \"id\": 9,\n    \"codigo\": \"SRV-003\",\n    \"nombre\": \"Afinamiento\",\n    \"precio\": 250.0,\n    \"duracionMin\": 120,\n    \"activo\": true\n  },\n  {\n    \"id\": 10,\n    \"codigo\": \"SRV-004\",\n    \"nombre\": \"Revision de frenos\",\n    \"precio\": 100.0,\n    \"duracionMin\": 60,\n    \"activo\": true\n  },\n  {\n    \"id\": 11,\n    \"codigo\": \"SRV-005\",\n    \"nombre\": \"Cambio de pastillas\",\n    \"precio\": 180.0,\n    \"duracionMin\": 90,\n    \"activo\": true\n  },\n  {\n    \"id\": 12,\n    \"codigo\": \"SRV-006\",\n    \"nombre\": \"Balanceo\",\n    \"precio\": 70.0,\n    \"duracionMin\": 30,\n    \"activo\": true\n  },\n  {\n    \"id\": 13,\n    \"codigo\": \"SRV-007\",\n    \"nombre\": \"Diagnostico electronico\",\n    \"precio\": 90.0,\n    \"duracionMin\": 45,\n    \"activo\": true\n  },\n  {\n    \"id\": 16,\n    \"codigo\": \"SRV-090\",\n    \"nombre\": \"Inspección de entrega\",\n    \"precio\": 55.5,\n    \"duracionMin\": 30,\n    \"activo\": true\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "Vehiculos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/vehiculos",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"vehiculoId\",pm.response.json().find(x=>x.placa===\"AAA-111\").id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/vehiculos",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"id\": 1,\n    \"placa\": \"AAA-111\",\n    \"marca\": \"Toyota\",\n    \"modelo\": \"Corolla\",\n    \"anio\": 2020,\n    \"clienteId\": 1,\n    \"clienteNombre\": \"Juan Perez\"\n  },\n  {\n    \"id\": 2,\n    \"placa\": \"BBB-222\",\n    \"marca\": \"Hyundai\",\n    \"modelo\": \"Elantra\",\n    \"anio\": 2021,\n    \"clienteId\": 2,\n    \"clienteNombre\": \"Maria Lopez\"\n  },\n  {\n    \"id\": 9,\n    \"placa\": \"CCC-333\",\n    \"marca\": \"Kia\",\n    \"modelo\": \"Rio\",\n    \"anio\": 2022,\n    \"clienteId\": 1,\n    \"clienteNombre\": \"Juan Perez\"\n  },\n  {\n    \"id\": 10,\n    \"placa\": \"DDD-444\",\n    \"marca\": \"Nissan\",\n    \"modelo\": \"Versa\",\n    \"anio\": 2022,\n    \"clienteId\": 7,\n    \"clienteNombre\": \"Carlos Quispe\"\n  },\n  {\n    \"id\": 11,\n    \"placa\": \"EEE-555\",\n    \"marca\": \"Toyota\",\n    \"modelo\": \"Yaris\",\n    \"anio\": 2022,\n    \"clienteId\": 8,\n    \"clienteNombre\": \"Rosa Flores\"\n  },\n  {\n    \"id\": 12,\n    \"placa\": \"FFF-666\",\n    \"marca\": \"Suzuki\",\n    \"modelo\": \"Swift\",\n    \"anio\": 2022,\n    \"clienteId\": 9,\n    \"clienteNombre\": \"Luis Mamani\"\n  },\n  {\n    \"id\": 13,\n    \"placa\": \"GGG-777\",\n    \"marca\": \"Kia\",\n    \"modelo\": \"Picanto\",\n    \"anio\": 2022,\n    \"clienteId\": 10,\n    \"clienteNombre\": \"Ana Torres\"\n  },\n  {\n    \"id\": 14,\n    \"placa\": \"HHH-888\",\n    \"marca\": \"Hyundai\",\n    \"modelo\": \"Accent\",\n    \"anio\": 2022,\n    \"clienteId\": 2,\n    \"clienteNombre\": \"Maria Lopez\"\n  },\n  {\n    \"id\": 17,\n    \"placa\": \"ZZX-900\",\n    \"marca\": \"Toyota\",\n    \"modelo\": \"Corolla\",\n    \"anio\": 2026,\n    \"clienteId\": 1,\n    \"clienteNombre\": \"Juan Perez\"\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "Servicio invalido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/servicios",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo\": \"MAL\",\n  \"nombre\": \"x\",\n  \"precio\": 0,\n  \"duracionMin\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/servicios",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"MAL\",\n  \"nombre\": \"x\",\n  \"precio\": 0,\n  \"duracionMin\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"campos\": {\n    \"nombre\": \"el tamaño debe estar entre 3 y 80\",\n    \"codigo\": \"El código debe tener el formato SRV-000\",\n    \"duracionMin\": \"debe ser mayor que o igual a 15\",\n    \"precio\": \"debe ser mayor que 0\"\n  },\n  \"error\": \"Bad Request\",\n  \"mensaje\": \"Datos inválidos\",\n  \"ruta\": \"/api/v1/servicios\",\n  \"status\": 400,\n  \"timestamp\": \"2026-10-29T12:45:03.9822231\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Sin token",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/servicios",
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/servicios",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"timestamp\": \"2026-10-29T12:45:03.6486473\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"mensaje\": \"Autenticación requerida o inválida\",\n  \"ruta\": \"/api/v1/servicios\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Token alterado",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/servicios",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{tokenAlterado}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/servicios",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenAlterado}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "Unauthorized",
+          "code": 401,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"timestamp\": \"2026-10-29T12:45:03.6751554\",\n  \"status\": 401,\n  \"error\": \"Unauthorized\",\n  \"mensaje\": \"Autenticación requerida o inválida\",\n  \"ruta\": \"/api/v1/servicios\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Reporte prohibido asesor",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/reportes/ingresos-por-servicio",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{asesorToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/reportes/ingresos-por-servicio",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{asesorToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Forbidden\",\n  \"mensaje\": \"No tiene permisos para realizar esta operación\",\n  \"ruta\": \"/api/v1/reportes/ingresos-por-servicio\",\n  \"status\": 403,\n  \"timestamp\": \"2026-10-29T12:45:03.738934\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Anulacion prohibida asesor",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes/1/anular",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{asesorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Cancelacion de prueba\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes/1/anular",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{asesorToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Cancelacion de prueba\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Forbidden\",\n  \"mensaje\": \"No tiene permisos para realizar esta operación\",\n  \"ruta\": \"/api/v1/ordenes/1/anular\",\n  \"status\": 403,\n  \"timestamp\": \"2026-10-29T12:45:03.7541033\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Registro prohibido jefe",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jefeToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jefeToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Forbidden\",\n  \"mensaje\": \"No tiene permisos para realizar esta operación\",\n  \"ruta\": \"/api/v1/ordenes\",\n  \"status\": 403,\n  \"timestamp\": \"2026-10-29T12:45:03.7977045\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Servicio inexistente",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/servicios/999999",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 404\", () => pm.response.to.have.status(404));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/servicios/999999",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Not Found\",\n  \"mensaje\": \"Servicio no encontrado\",\n  \"ruta\": \"/api/v1/servicios/999999\",\n  \"status\": 404,\n  \"timestamp\": \"2026-10-29T12:45:03.9477027\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Codigo duplicado",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/servicios",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo\": \"SRV-001\",\n  \"nombre\": \"Duplicado\",\n  \"precio\": 50,\n  \"duracionMin\": 30\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/servicios",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"SRV-001\",\n  \"nombre\": \"Duplicado\",\n  \"precio\": 50,\n  \"duracionMin\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Conflict\",\n  \"mensaje\": \"El código ya existe\",\n  \"ruta\": \"/api/v1/servicios\",\n  \"status\": 409,\n  \"timestamp\": \"2026-10-29T12:45:04.0699554\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Conteo antes de rollback",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"ordenesAntes\",pm.response.json().length);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"id\": 10,\n    \"numero\": \"OS-000009\",\n    \"fecha\": \"2026-10-29T12:37:15.19208\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 270.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 150.0\n      },\n      {\n        \"servicioId\": 2,\n        \"codigo\": \"SRV-002\",\n        \"servicio\": \"Alineamiento y Balanceo\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 120.0,\n        \"subtotal\": 120.0\n      }\n    ]\n  },\n  {\n    \"id\": 9,\n    \"numero\": \"OS-000008\",\n    \"fecha\": \"2026-10-29T12:29:56.14583\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"ANULADA\",\n    \"total\": 300.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": \"Cancelacion de prueba automatizada\",\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 2,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 300.0\n      }\n    ]\n  },\n  {\n    \"id\": 8,\n    \"numero\": \"OS-000006\",\n    \"fecha\": \"2026-10-29T12:29:19.889603\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 300.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 2,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 300.0\n      }\n    ]\n  },\n  {\n    \"id\": 7,\n    \"numero\": \"OS-000004\",\n    \"fecha\": \"2026-10-29T12:26:02.33296\",\n    \"placa\": \"DDD-444\",\n    \"kilometraje\": 10000.0,\n    \"estado\": \"ANULADA\",\n    \"total\": 100.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": \"Cancelacion del cliente\",\n    \"detalles\": [\n      {\n        \"servicioId\": 10,\n        \"codigo\": \"SRV-004\",\n        \"servicio\": \"Revision de frenos\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 100.0,\n        \"subtotal\": 100.0\n      }\n    ]\n  },\n  {\n    \"id\": 6,\n    \"numero\": \"OS-000003\",\n    \"fecha\": \"2026-10-29T12:26:02.328556\",\n    \"placa\": \"CCC-333\",\n    \"kilometraje\": 20000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 250.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 9,\n        \"codigo\": \"SRV-003\",\n        \"servicio\": \"Afinamiento\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 250.0,\n        \"subtotal\": 250.0\n      }\n    ]\n  },\n  {\n    \"id\": 5,\n    \"numero\": \"OS-000002\",\n    \"fecha\": \"2026-10-29T12:26:02.324099\",\n    \"placa\": \"BBB-222\",\n    \"kilometraje\": 30000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 120.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 2,\n        \"codigo\": \"SRV-002\",\n        \"servicio\": \"Alineamiento y Balanceo\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 120.0,\n        \"subtotal\": 120.0\n      }\n    ]\n  },\n  {\n    \"id\": 1,\n    \"numero\": \"OS-000001\",\n    \"fecha\": \"2026-10-29T10:10:44.58645\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 150.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 150.0\n      }\n    ]\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "Tercer detalle inactivo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{asesorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": {{servicio2}},\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": {{inactivo}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{asesorToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": {{servicio2}},\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": {{inactivo}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Conflict\",\n  \"mensaje\": \"El servicio SRV-008 no está activo\",\n  \"ruta\": \"/api/v1/ordenes\",\n  \"status\": 409,\n  \"timestamp\": \"2026-10-29T12:45:04.5959356\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Conteo despues de rollback",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"No se guardó cabecera parcial\",()=>pm.expect(pm.response.json().length).to.eql(Number(pm.collectionVariables.get(\"ordenesAntes\"))));"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"id\": 10,\n    \"numero\": \"OS-000009\",\n    \"fecha\": \"2026-10-29T12:37:15.19208\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 270.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 150.0\n      },\n      {\n        \"servicioId\": 2,\n        \"codigo\": \"SRV-002\",\n        \"servicio\": \"Alineamiento y Balanceo\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 120.0,\n        \"subtotal\": 120.0\n      }\n    ]\n  },\n  {\n    \"id\": 9,\n    \"numero\": \"OS-000008\",\n    \"fecha\": \"2026-10-29T12:29:56.14583\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"ANULADA\",\n    \"total\": 300.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": \"Cancelacion de prueba automatizada\",\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 2,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 300.0\n      }\n    ]\n  },\n  {\n    \"id\": 8,\n    \"numero\": \"OS-000006\",\n    \"fecha\": \"2026-10-29T12:29:19.889603\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 300.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 2,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 300.0\n      }\n    ]\n  },\n  {\n    \"id\": 7,\n    \"numero\": \"OS-000004\",\n    \"fecha\": \"2026-10-29T12:26:02.33296\",\n    \"placa\": \"DDD-444\",\n    \"kilometraje\": 10000.0,\n    \"estado\": \"ANULADA\",\n    \"total\": 100.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": \"Cancelacion del cliente\",\n    \"detalles\": [\n      {\n        \"servicioId\": 10,\n        \"codigo\": \"SRV-004\",\n        \"servicio\": \"Revision de frenos\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 100.0,\n        \"subtotal\": 100.0\n      }\n    ]\n  },\n  {\n    \"id\": 6,\n    \"numero\": \"OS-000003\",\n    \"fecha\": \"2026-10-29T12:26:02.328556\",\n    \"placa\": \"CCC-333\",\n    \"kilometraje\": 20000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 250.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 9,\n        \"codigo\": \"SRV-003\",\n        \"servicio\": \"Afinamiento\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 250.0,\n        \"subtotal\": 250.0\n      }\n    ]\n  },\n  {\n    \"id\": 5,\n    \"numero\": \"OS-000002\",\n    \"fecha\": \"2026-10-29T12:26:02.324099\",\n    \"placa\": \"BBB-222\",\n    \"kilometraje\": 30000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 120.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 2,\n        \"codigo\": \"SRV-002\",\n        \"servicio\": \"Alineamiento y Balanceo\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 120.0,\n        \"subtotal\": 120.0\n      }\n    ]\n  },\n  {\n    \"id\": 1,\n    \"numero\": \"OS-000001\",\n    \"fecha\": \"2026-10-29T10:10:44.58645\",\n    \"placa\": \"AAA-111\",\n    \"kilometraje\": 45000.0,\n    \"estado\": \"REGISTRADA\",\n    \"total\": 150.0,\n    \"usuarioRegistro\": \"asesor\",\n    \"motivoAnulacion\": null,\n    \"detalles\": [\n      {\n        \"servicioId\": 1,\n        \"codigo\": \"SRV-001\",\n        \"servicio\": \"Cambio de Aceite\",\n        \"cantidad\": 1,\n        \"precioUnitario\": 150.0,\n        \"subtotal\": 150.0\n      }\n    ]\n  }\n]"
+        }
+      ]
+    },
+    {
+      "name": "Kilometraje menor",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{asesorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 1,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{asesorToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 1,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Conflict",
+          "code": 409,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Conflict\",\n  \"mensaje\": \"El kilometraje no puede ser menor al de la última orden: 45000.0\",\n  \"ruta\": \"/api/v1/ordenes\",\n  \"status\": 409,\n  \"timestamp\": \"2026-10-29T12:45:04.6668175\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Servicio repetido",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{asesorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{asesorToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"error\": \"Bad Request\",\n  \"mensaje\": \"No se puede repetir un servicio en la orden\",\n  \"ruta\": \"/api/v1/ordenes\",\n  \"status\": 400,\n  \"timestamp\": \"2026-10-29T12:45:04.7079003\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Registro atomico",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{asesorToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set(\"ordenId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{asesorToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": {{vehiculoId}},\n  \"kilometraje\": 45000,\n  \"detalles\": [\n    {\n      \"servicioId\": {{servicio1}},\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"id\": 11,\n  \"numero\": \"OS-000011\",\n  \"fecha\": \"2026-10-29T12:45:04.8156763\",\n  \"placa\": \"AAA-111\",\n  \"kilometraje\": 45000.0,\n  \"estado\": \"REGISTRADA\",\n  \"total\": 300.0,\n  \"usuarioRegistro\": \"asesor\",\n  \"motivoAnulacion\": null,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"codigo\": \"SRV-001\",\n      \"servicio\": \"Cambio de Aceite\",\n      \"cantidad\": 2,\n      \"precioUnitario\": 150.0,\n      \"subtotal\": 300.0\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Detalle orden",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/ordenes/{{ordenId}}",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{adminToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/ordenes/{{ordenId}}",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"id\": 11,\n  \"numero\": \"OS-000011\",\n  \"fecha\": \"2026-10-29T12:45:04.815676\",\n  \"placa\": \"AAA-111\",\n  \"kilometraje\": 45000.0,\n  \"estado\": \"REGISTRADA\",\n  \"total\": 300.0,\n  \"usuarioRegistro\": \"asesor\",\n  \"motivoAnulacion\": null,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"codigo\": \"SRV-001\",\n      \"servicio\": \"Cambio de Aceite\",\n      \"cantidad\": 2,\n      \"precioUnitario\": 150.0,\n      \"subtotal\": 300.0\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Motivo corto",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes/{{ordenId}}/anular",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jefeToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"No\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes/{{ordenId}}/anular",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jefeToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"No\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"campos\": {\n    \"motivo\": \"el tamaño debe estar entre 10 y 200\"\n  },\n  \"error\": \"Bad Request\",\n  \"mensaje\": \"Datos inválidos\",\n  \"ruta\": \"/api/v1/ordenes/11/anular\",\n  \"status\": 400,\n  \"timestamp\": \"2026-10-29T12:45:04.964476\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Anular mismo dia",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/ordenes/{{ordenId}}/anular",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jefeToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"motivo\": \"Cancelacion de prueba Postman\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/ordenes/{{ordenId}}/anular",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jefeToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Cancelacion de prueba Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"id\": 11,\n  \"numero\": \"OS-000011\",\n  \"fecha\": \"2026-10-29T12:45:04.815676\",\n  \"placa\": \"AAA-111\",\n  \"kilometraje\": 45000.0,\n  \"estado\": \"ANULADA\",\n  \"total\": 300.0,\n  \"usuarioRegistro\": \"asesor\",\n  \"motivoAnulacion\": \"Cancelacion de prueba automatizada\",\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"codigo\": \"SRV-001\",\n      \"servicio\": \"Cambio de Aceite\",\n      \"cantidad\": 2,\n      \"precioUnitario\": 150.0,\n      \"subtotal\": 300.0\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Reporte excluye anuladas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/reportes/ingresos-por-servicio",
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{jefeToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              ""
+            ]
+          }
+        }
+      ],
+      "response": [
+        {
+          "name": "Ejecución real contra Oracle",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/reportes/ingresos-por-servicio",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{jefeToken}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"codigo\": \"SRV-001\",\n    \"servicio\": \"Cambio de Aceite\",\n    \"cantidadTotal\": 4,\n    \"importeTotal\": 600.0\n  },\n  {\n    \"codigo\": \"SRV-003\",\n    \"servicio\": \"Afinamiento\",\n    \"cantidadTotal\": 1,\n    \"importeTotal\": 250.0\n  },\n  {\n    \"codigo\": \"SRV-002\",\n    \"servicio\": \"Alineamiento y Balanceo\",\n    \"cantidadTotal\": 2,\n    \"importeTotal\": 240.0\n  }\n]"
+        }
+      ]
+    }
+  ]
+}
