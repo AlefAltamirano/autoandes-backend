@@ -6,5 +6,5 @@ import java.util.List;
 
 public record OrdenRequestDTO(
         @NotNull Long vehiculoId,
-        @NotNull @PositiveOrZero Double kilometraje,
-        @NotEmpty @Size(max = 10) List<@Valid DetalleOrdenRequestDTO> detalles) {}
+        @NotNull @PositiveOrZero @Max(9999999) @Digits(integer = 7, fraction = 0) Double kilometraje,
+        @NotEmpty @Size(max = 10) List<@NotNull @Valid DetalleOrdenRequestDTO> detalles) {}

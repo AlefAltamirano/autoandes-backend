@@ -9,7 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "orden_servicio")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -48,3 +49,4 @@ public class OrdenServicio {
     @OneToMany(mappedBy = "ordenServicio", cascade = CascadeType.ALL)
     private List<DetalleOrden> detalles;
 }
+

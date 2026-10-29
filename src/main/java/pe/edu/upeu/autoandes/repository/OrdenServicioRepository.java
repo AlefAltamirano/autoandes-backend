@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrdenServicioRepository extends JpaRepository<OrdenServicio, Long> {
+    @Query(value = "SELECT orden_numero_seq.NEXTVAL FROM dual", nativeQuery = true)
+    Long siguienteNumero();
+
 
     @Query("SELECT o FROM OrdenServicio o WHERE " +
            "(:placa IS NULL OR o.vehiculo.placa = :placa) AND " +
@@ -34,4 +37,11 @@ public interface OrdenServicioRepository extends JpaRepository<OrdenServicio, Lo
            "WHERE o.estado <> 'ANULADA' " +
            "GROUP BY s.codigo, s.nombre ORDER BY SUM(d.subtotal) DESC")
     List<pe.edu.upeu.autoandes.dto.ReporteIngresoServicioDTO> obtenerReporteIngresos();
+
+    @Query("SELECT new pe.edu.upeu.autoandes.dto.ReporteIngresoServicioDTO(s.codigo, s.nombre, SUM(d.cantidad), SUM(d.subtotal)) " +
+           "FROM DetalleOrden d JOIN d.servicio s JOIN d.ordenServicio o " +
+           "WHERE o.estado <> 'ANULADA' AND (:desde IS NULL OR o.fecha >= :desde) AND (:hasta IS NULL OR o.fecha <= :hasta) " +
+           "GROUP BY s.codigo, s.nombre ORDER BY SUM(d.subtotal) DESC")
+    List<pe.edu.upeu.autoandes.dto.ReporteIngresoServicioDTO> obtenerReporteIngresos(
+            @Param("desde") LocalDateTime desde, @Param("hasta") LocalDateTime hasta);
 }

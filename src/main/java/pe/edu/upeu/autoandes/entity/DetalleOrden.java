@@ -7,7 +7,8 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "detalle_orden")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -35,3 +36,4 @@ public class DetalleOrden {
     @JdbcTypeCode(SqlTypes.NUMERIC)
     private Double subtotal;
 }
+
