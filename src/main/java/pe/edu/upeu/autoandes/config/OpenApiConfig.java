@@ -11,9 +11,12 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
+                .components(new io.swagger.v3.oas.models.Components().addSecuritySchemes("bearerAuth",
+                        new io.swagger.v3.oas.models.security.SecurityScheme().type(io.swagger.v3.oas.models.security.SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
+                .addSecurityItem(new io.swagger.v3.oas.models.security.SecurityRequirement().addList("bearerAuth"))
                 .info(new Info()
-                        .title("AutoAndes Backend API")
-                        .version("1.0")
-                        .description("Documentación de la API para el sistema AutoAndes"));
+                        .title("AutoAndes API REST")
+                        .version("v1.0")
+                        .description("Documentación interactiva de la API para el taller mecánico AutoAndes"));
     }
 }

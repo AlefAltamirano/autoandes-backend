@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "vehiculo")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,3 +31,4 @@ public class Vehiculo {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 }
+

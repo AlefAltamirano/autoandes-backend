@@ -5,7 +5,9 @@ import java.util.List;
 
 public interface ServicioService {
     List<Servicio> listar();
+    Servicio obtener(Long id);
     Servicio guardar(Servicio servicio);
+    Servicio actualizar(Long id, Servicio servicio);
     void eliminar(Long id);
     void cambiarEstado(Long id, Boolean activo);
 }

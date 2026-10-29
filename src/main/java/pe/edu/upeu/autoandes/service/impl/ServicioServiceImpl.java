@@ -11,6 +11,7 @@ import pe.edu.upeu.autoandes.service.ServicioService;
 
 import java.util.List;
 
+@org.springframework.transaction.annotation.Transactional
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -25,13 +26,34 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
+    public Servicio obtener(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new pe.edu.upeu.autoandes.exception.RecursoNoEncontradoException("Servicio no encontrado"));
+    }
+
+    @Override
     public Servicio guardar(Servicio servicio) {
         if (repository.existsByCodigo(servicio.getCodigo())) {
             log.warn("Intento de registrar código duplicado: {}", servicio.getCodigo());
             throw new ReglaNegocioException("El código ya existe");
         }
+
         log.info("Registrando nuevo servicio: {}", servicio.getCodigo());
         return repository.save(servicio);
+    }
+
+    @Override
+    public Servicio actualizar(Long id, Servicio servicio) {
+        Servicio actual = obtener(id);
+        if (repository.existsByCodigoAndIdNot(servicio.getCodigo(), id)) {
+            throw new ReglaNegocioException("El código ya existe");
+        }
+        actual.setCodigo(servicio.getCodigo());
+        actual.setNombre(servicio.getNombre());
+        actual.setPrecio(servicio.getPrecio());
+        actual.setDuracionMin(servicio.getDuracionMin());
+        log.info("Servicio actualizado: {}", id);
+        return repository.save(actual);
     }
 
     @Override

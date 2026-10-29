@@ -14,6 +14,7 @@ import pe.edu.upeu.autoandes.service.VehiculoService;
 
 import java.util.List;
 
+@org.springframework.transaction.annotation.Transactional
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -29,18 +30,46 @@ public class VehiculoServiceImpl implements VehiculoService {
     }
 
     @Override
+    public List<Vehiculo> listarPorCliente(Long clienteId) {
+        return repository.findByClienteId(clienteId);
+    }
+
+    @Override
+    public Vehiculo obtener(Long id) {
+        return repository.findById(id).orElseThrow(() ->
+                new RecursoNoEncontradoException("Vehículo no encontrado"));
+    }
+
+    @Override
     public Vehiculo guardar(Vehiculo vehiculo) {
         if (repository.existsByPlaca(vehiculo.getPlaca())) {
             log.warn("Intento de registrar placa duplicada: {}", vehiculo.getPlaca());
             throw new ReglaNegocioException("La placa ya existe");
         }
-        
+
         Cliente cliente = clienteRepository.findById(vehiculo.getCliente().getId())
                 .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado"));
         
         vehiculo.setCliente(cliente);
         log.info("Vehículo registrado: {}", vehiculo.getPlaca());
         return repository.save(vehiculo);
+    }
+
+    @Override
+    public Vehiculo actualizar(Long id, Vehiculo vehiculo) {
+        Vehiculo actual = obtener(id);
+        if (repository.existsByPlacaAndIdNot(vehiculo.getPlaca(), id)) {
+            throw new ReglaNegocioException("La placa ya existe");
+        }
+        Cliente cliente = clienteRepository.findById(vehiculo.getCliente().getId())
+                .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado"));
+        actual.setPlaca(vehiculo.getPlaca());
+        actual.setMarca(vehiculo.getMarca());
+        actual.setModelo(vehiculo.getModelo());
+        actual.setAnio(vehiculo.getAnio());
+        actual.setCliente(cliente);
+        log.info("Vehículo actualizado: {}", id);
+        return repository.save(actual);
     }
 
     @Override

@@ -5,7 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(name = "cliente")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,3 +24,4 @@ public class Cliente {
     @Column(length = 15)
     private String telefono;
 }
+

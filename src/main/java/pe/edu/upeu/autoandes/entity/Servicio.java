@@ -7,7 +7,8 @@ import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "servicio")
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,7 +31,9 @@ public class Servicio {
     private Integer duracionMin;
     
     @Column(nullable = false)
-    @JdbcTypeCode(SqlTypes.NUMERIC)
+    @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
     @Builder.Default
     private Boolean activo = true;
 }
+
+
